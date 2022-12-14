@@ -12,7 +12,7 @@ using Supply_Chain_Portal.Data;
 namespace SupplyChainPortal.Migrations
 {
     [DbContext(typeof(SupplyChainDbContext))]
-    [Migration("20221208104050_InitialMigration")]
+    [Migration("20221208124419_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -62,7 +62,7 @@ namespace SupplyChainPortal.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<double>("Lenght")
+                    b.Property<double>("Length")
                         .HasColumnType("float");
 
                     b.Property<string>("Name")
@@ -70,9 +70,6 @@ namespace SupplyChainPortal.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("RegionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("WalkDefaultyId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("WalkDifficultyId")

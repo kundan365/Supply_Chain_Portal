@@ -46,10 +46,9 @@ namespace SupplyChainPortal.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Lenght = table.Column<double>(type: "float", nullable: false),
-                    RegionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    WalkDefaultyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    WalkDifficultyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Length = table.Column<double>(type: "float", nullable: false),
+                    WalkDifficultyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RegionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
