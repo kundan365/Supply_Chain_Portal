@@ -7,6 +7,7 @@ namespace Supply_Chain_Portal.Controllers
 {
     [ApiController]
     [Route("Regions")]
+    
     public class RegionController : Controller
     {
         private readonly IResionRepository resionRepository;
@@ -18,7 +19,7 @@ namespace Supply_Chain_Portal.Controllers
             this.mapper = mapper;
         }
         [HttpGet]
-        public async Task<IActionResult> getAllRegion()
+        public async Task<IActionResult> getAllRegionAsync()
         {
 
             //var regions = new List<Region>()
@@ -55,7 +56,53 @@ namespace Supply_Chain_Portal.Controllers
             var regionsDTO=mapper.Map<List<Models.DTO.Region>>(regions);
             return Ok(regionsDTO);
         }
-           
+        
+        [HttpGet]
+        [Route("{Id:Guid}")]
+        [ActionName("getRegionDetailsAsync")]
+        public async Task<IActionResult> getRegionDetailsAsync(Guid Id)
+        {
+            var values=await resionRepository.GetRegionAsync(Id);
+            if(values==null)
+            {
+                return NotFound();
+            }
+            var RegionDTO= mapper.Map<Models.DTO.Region>(values);
+            return Ok(RegionDTO);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddRegionAsync(Models.DTO.AddReguestRegion addReguestRegion)
+        {
+            //Request Dto to Domain Models
+            var regionData = new Models.Domain.Region()
+            {
+                Name = addReguestRegion.Name,
+                Code = addReguestRegion.Code,
+                Area = addReguestRegion.Area,
+                Lat = addReguestRegion.Lat,
+                Long = addReguestRegion.Long,
+                Population = addReguestRegion.Population
+            };
+
+            //Pass Details to Repository    
+         regionData=  await resionRepository.AddRegionData(regionData);
+
+            //convert back to DTO
+            var regionDTO = new Models.DTO.Region()
+            {
+                Id = regionData.Id,
+                Name = regionData.Name,
+                Code = regionData.Code,
+                Area = regionData.Area,
+                Lat = regionData.Lat,
+                Long = regionData.Long,
+                Population = regionData.Population
+            };
+            return CreatedAtAction(nameof(getRegionDetailsAsync),new {Id= regionDTO.Id}, regionDTO);
+
+        }
     }
+
+   
 }
 

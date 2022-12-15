@@ -23,8 +23,7 @@ builder.Services.AddScoped<IWalkRepository, WalkRepository>();
 builder.Services.AddScoped<IWalkDifficultyRepository, WalkDifficultyRepository>();
 builder.Services.AddScoped<IProductInfoRepository, ProductInfoRepository>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
