@@ -70,6 +70,7 @@ namespace Supply_Chain_Portal.Controllers
             var RegionDTO= mapper.Map<Models.DTO.Region>(values);
             return Ok(RegionDTO);
         }
+       
         [HttpPost]
         public async Task<IActionResult> AddRegionAsync(Models.DTO.AddReguestRegion addReguestRegion)
         {
@@ -85,7 +86,7 @@ namespace Supply_Chain_Portal.Controllers
             };
 
             //Pass Details to Repository    
-         regionData=  await resionRepository.AddRegionData(regionData);
+         regionData=  await resionRepository.AddRegionDataAsync(regionData);
 
             //convert back to DTO
             var regionDTO = new Models.DTO.Region()
@@ -101,6 +102,57 @@ namespace Supply_Chain_Portal.Controllers
             return CreatedAtAction(nameof(getRegionDetailsAsync),new {Id= regionDTO.Id}, regionDTO);
 
         }
+       
+        [HttpPut]
+        [Route("{Id:Guid}")]
+        public async Task<IActionResult> UpdateRegionAsync([FromRoute] Guid Id,[FromBody]  Models.DTO.UpdateRequestRegion updateRequestRegion)
+        {
+            //Convert DTO to Domain models
+            var region = new Models.Domain.Region()
+            {
+                Name= updateRequestRegion.Name,
+                Code= updateRequestRegion.Code,
+                Area= updateRequestRegion.Area,
+                Lat= updateRequestRegion.Lat,
+                Long= updateRequestRegion.Long,
+                Population= updateRequestRegion.Population
+            };
+            //Update Product details using repository
+            region = await resionRepository.UpdateRegionDataAsync(Id, region);
+
+
+            //if Null then Not found
+            if (region == null)
+            {
+                return NotFound();
+            }
+            //Convert Domain Back To DTO
+            var resionDTO = new Models.DTO.Region()
+            {
+                Id= region.Id,
+                Name = region.Name,
+                Code = region.Code,
+                Area = region.Area,
+                Lat = region.Lat,
+                Long = region.Long,
+                Population = region.Population
+            };
+            return Ok(resionDTO);
+
+        }
+        [HttpDelete]
+        [Route("{Id:Guid}")]
+        public async Task<IActionResult> DeleteRegionByIdAync(Guid Id)
+        {
+            var region=await resionRepository.DeleteRegionDataAsync(Id);
+            if(region == null)
+            {
+                return NotFound();
+            }
+            var regionDTO= mapper.Map<Models.DTO.Region>(region);
+            return Ok(regionDTO);
+        }
+
     }
 
    

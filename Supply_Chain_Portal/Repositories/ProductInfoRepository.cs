@@ -39,7 +39,7 @@ namespace Supply_Chain_Portal.Repositories
             {
                 return product;
             }
-            supplyChainDbContext.ProductInfo.Remove(product);
+              supplyChainDbContext.ProductInfo.Remove(product);
             await supplyChainDbContext.SaveChangesAsync();
             return product;
         }

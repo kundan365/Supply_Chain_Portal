@@ -16,8 +16,6 @@ builder.Services.AddDbContext<SupplyChainDbContext>(options => {
 
 });
 
-
-
 builder.Services.AddScoped<IResionRepository, ResionRepository>();
 builder.Services.AddScoped<IWalkRepository, WalkRepository>();
 builder.Services.AddScoped<IWalkDifficultyRepository, WalkDifficultyRepository>();

@@ -6,6 +6,8 @@ namespace Supply_Chain_Portal.Repositories
     {
         Task<IEnumerable<Region>> GetAllAsync();
         Task<Region> GetRegionAsync(Guid Id);
-        Task<Region>  AddRegionData(Region region); 
+        Task<Region>  AddRegionDataAsync(Region region);
+        Task<Region> UpdateRegionDataAsync(Guid Id,Region region);
+        Task <Region> DeleteRegionDataAsync(Guid Id);
     }
 }

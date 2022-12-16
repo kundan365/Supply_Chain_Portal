@@ -18,6 +18,7 @@ namespace Supply_Chain_Portal.Controllers
             this.productInfoRepository = productInfoRepository;
             this.mapper = mapper;
         }
+       
         [HttpGet]
         public async Task<IActionResult> GetProductDetails()
         {
@@ -41,6 +42,7 @@ namespace Supply_Chain_Portal.Controllers
             var valuesDTO = mapper.Map<List<Models.DTO.ProductDetails>>(values);
             return Ok(valuesDTO);
         }
+        
         [HttpGet]
         [Route("{Id:int}")]
         [ActionName("GetAllProductAsync")]
@@ -56,7 +58,6 @@ namespace Supply_Chain_Portal.Controllers
         }
 
         [HttpPost]
-
         //Request Dto to Domain Models
         public async Task<IActionResult> AddAllProductAsync(Models.DTO.ProductDetails productDetails)
         {
@@ -87,22 +88,10 @@ namespace Supply_Chain_Portal.Controllers
             };
             return CreatedAtAction(nameof(GetAllProductAsync), new { Id = ProductDTO.Id }, ProductDTO);
         }
-        [HttpDelete]
-        [Route("{Id:int}")]
-        public async Task<IActionResult> GetDeleteProductDetails(int Id)
-        {
-            var values = await productInfoRepository.DeleteProductDetailsAsync(Id);
-            if (values == null)
-            {
-                return NotFound();
-            }
-            var valueDTO = mapper.Map<Models.DTO.ProductDetails>(values);
-            return Ok(valueDTO);
-        }
-
+        
         [HttpPut]
         [Route("{Id:int}")]
-        public async Task<IActionResult> UpdateAllProductDeatailsAsync([FromRoute]int Id, [FromBody]Models.DTO.UpdateRequestProductDetails updateRequestProductDetails)
+        public async Task<IActionResult> UpdateAllProductDeatailsAsync([FromRoute] int Id, [FromBody] Models.DTO.UpdateRequestProductDetails updateRequestProductDetails)
         {
             //Convert DTO to Domain models
 
@@ -136,6 +125,19 @@ namespace Supply_Chain_Portal.Controllers
             };
             //return Ok Response
             return Ok(ProductDTO);
+        }
+
+        [HttpDelete]
+        [Route("{Id:int}")]
+        public async Task<IActionResult> GetDeleteProductDetails(int Id)
+        {
+            var values = await productInfoRepository.DeleteProductDetailsAsync(Id);
+            if (values == null)
+            {
+                return NotFound();
+            }
+            var valueDTO = mapper.Map<Models.DTO.ProductDetails>(values);
+            return Ok(valueDTO);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Supply_Chain_Portal.Controllers
             this.mapper = mapper;
         }
         [HttpGet]
-        
+
         public async Task<IActionResult> getWalkDifficultyAsync()
         {
             var value = await walkDifficultyRepository.GetDifficultyAsync();
@@ -36,19 +36,22 @@ namespace Supply_Chain_Portal.Controllers
             var ValuesDTO = mapper.Map<List<Models.DTO.WalkDifficulty>>(value);
             return Ok(ValuesDTO);
         }
+       
         [HttpGet]
         [Route("{Id:Guid}")]
         [ActionName("getAllWalkDifficultyAsync")]
         public async Task<IActionResult> getAllWalkDifficultyAsync(Guid Id)
         {
             var walkDifficulty = await walkDifficultyRepository.GetAllDifficultyAsync(Id);
-            if(walkDifficulty == null)
+            if (walkDifficulty == null)
             {
                 return NotFound();
             }
             var Result = mapper.Map<Models.DTO.WalkDifficulty>(walkDifficulty);
             return Ok(Result);
         }
+       
+        
         [HttpPost]
         public async Task<IActionResult> AddWalkDificultyData(Models.DTO.AddRequestWalkDifficulty addRequestWalkDifficulty)
         {
@@ -63,11 +66,53 @@ namespace Supply_Chain_Portal.Controllers
             //convert back to DTO
             var WalkDificultyDTO = new Models.Domain.WalkDifficulty
             {
-                Id= WalkDificultyData.Id,
-               Code = WalkDificultyData.Code,
+                Id = WalkDificultyData.Id,
+                Code = WalkDificultyData.Code,
             };
             return AcceptedAtAction(nameof(getAllWalkDifficultyAsync), new { Id = WalkDificultyDTO.Id }, WalkDificultyDTO);
-            
+
+        }
+
+        
+        [HttpPut]
+        [Route("{Id:Guid}")]
+        public async Task<IActionResult> UpdateWalkDifficulty([FromRoute] Guid Id, [FromBody] Models.DTO.UpdateRequestWalkDifficulty updateRequestWalkDifficulty)
+        {
+            //Convert DTO to Domain models
+            var Walkdiffi = new Models.Domain.WalkDifficulty()
+            {
+                Code = updateRequestWalkDifficulty.Code,
+            };
+            //Update WalkDifficulty details using repository
+            Walkdiffi = await walkDifficultyRepository.UpdatewalkDifficultyAsync(Id,Walkdiffi);
+
+            //if Null then Not found
+            if(Walkdiffi == null)
+            {
+                return NotFound();
+            }
+            //Convert Domain Back to DTO
+            var WalkdiffiDTO = new Models.DTO.WalkDifficulty()
+            {
+                Id = Walkdiffi.Id,
+                Code = Walkdiffi.Code
+            }; 
+            return Ok(WalkdiffiDTO);
+        }
+        
+        [HttpDelete]
+        [Route("{Id:Guid}")]
+        public async Task<IActionResult> DeleteWlakDifficultyById(Guid Id)
+        {
+            var WalkDiff = await walkDifficultyRepository.DeleteDifficultyAsync(Id);
+            if (WalkDiff == null)
+            {
+                return NotFound();
+            }
+            var WalkDiffDTO = mapper.Map<Models.Domain.WalkDifficulty>(WalkDiff);
+            return Ok(WalkDiffDTO);
         }
     }
 }
+
+

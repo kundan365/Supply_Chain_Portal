@@ -27,11 +27,36 @@ namespace Supply_Chain_Portal.Repositories
             await supplyChainDbContext.SaveChangesAsync();
             return walkDifficulty;
         }
-        
+
         public async Task<WalkDifficulty> GetAllDifficultyAsync(Guid Id)
         {
-            return await supplyChainDbContext.WalkDifficulty.FirstOrDefaultAsync(x=>x.Id==Id);
-            
+            var walkdiff = await supplyChainDbContext.WalkDifficulty.FirstOrDefaultAsync(x => x.Id == Id);
+            return walkdiff;
+
+        }
+
+        public async Task<WalkDifficulty> DeleteDifficultyAsync(Guid Id)
+        {
+            var walkDiiff = await supplyChainDbContext.WalkDifficulty.FirstOrDefaultAsync(x => x.Id == Id);
+            if (walkDiiff == null)
+            {
+                return walkDiiff;
+            }
+            supplyChainDbContext.WalkDifficulty.Remove(walkDiiff);
+            await supplyChainDbContext.SaveChangesAsync();
+            return walkDiiff;
+        }
+
+        public async Task<WalkDifficulty> UpdatewalkDifficultyAsync(Guid Id, WalkDifficulty walkDifficulty)
+        {
+            var ExistingDifficulty = await supplyChainDbContext.WalkDifficulty.FirstOrDefaultAsync(x => x.Id == Id);
+            if (ExistingDifficulty == null)
+            {
+                return null;
+            }
+            ExistingDifficulty.Code = walkDifficulty.Code;
+            await supplyChainDbContext.SaveChangesAsync();
+            return ExistingDifficulty;
         }
     }
 }
