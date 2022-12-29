@@ -57,10 +57,10 @@ namespace Supply_Chain_Portal.Controllers
         public async Task<IActionResult> AddWalkDificultyData(Models.DTO.AddRequestWalkDifficulty addRequestWalkDifficulty)
         {
             //validate Code
-            if(!ValidateAddWalkDificultyData(addRequestWalkDifficulty))
-            {
-                return NotFound(ModelState);
-            }
+            //if(!ValidateAddWalkDificultyData(addRequestWalkDifficulty))
+            //{
+            //    return NotFound(ModelState);
+            //}
             //Request Dto to Domain Models
             var WalkDificultyData = new Models.Domain.WalkDifficulty
             {
@@ -85,10 +85,10 @@ namespace Supply_Chain_Portal.Controllers
         public async Task<IActionResult> UpdateWalkDifficultyAsync([FromRoute] Guid Id, [FromBody] Models.DTO.UpdateRequestWalkDifficulty updateRequestWalkDifficulty)
         {
             //validate Code
-            if (!ValidateUpdateWalkDifficulty(updateRequestWalkDifficulty))
-            {
-                return NotFound(ModelState);
-            }
+            //if (!ValidateUpdateWalkDifficulty(updateRequestWalkDifficulty))
+            //{
+            //    return NotFound(ModelState);
+            //}
             //Convert DTO to Domain models
             var Walkdiffi = new Models.Domain.WalkDifficulty()
             {

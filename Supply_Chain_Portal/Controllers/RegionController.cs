@@ -77,10 +77,10 @@ namespace Supply_Chain_Portal.Controllers
         {
 
             //validate data
-            if(!validateAddRegionAsync(addReguestRegion))
-            {
-                return BadRequest(ModelState);
-            }
+            //if(!validateAddRegionAsync(addReguestRegion))
+            //{
+            //    return BadRequest(ModelState);
+            //}
             //Request Dto to Domain Models
             var regionData = new Models.Domain.Region()
             {
@@ -115,10 +115,10 @@ namespace Supply_Chain_Portal.Controllers
         public async Task<IActionResult> UpdateRegionAsync([FromRoute] Guid Id,[FromBody]  Models.DTO.UpdateRequestRegion updateRequestRegion)
         {
             //validate Code
-            if(!validateUpdateRegionAsync(updateRequestRegion))
-            {
-                return BadRequest(ModelState);
-            }
+            //if(!validateUpdateRegionAsync(updateRequestRegion))
+            //{
+            //    return BadRequest(ModelState);
+            //}
             //Convert DTO to Domain models
             var region = new Models.Domain.Region()
             {

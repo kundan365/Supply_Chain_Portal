@@ -66,7 +66,7 @@ namespace Supply_Chain_Portal.Controllers
         public async Task<IActionResult> AddWalkAsync([FromBody] Models.DTO.AddRequestWalk addRequestWalk)
         {
             //validate Code
-            if(!ValidateAddWalkAsync(addRequestWalk))
+            if (!ValidateAddWalkAsync(addRequestWalk))
             {
                 return NotFound(ModelState);
             }
@@ -100,10 +100,10 @@ namespace Supply_Chain_Portal.Controllers
         public async Task<IActionResult> UpdateWalkAsync([FromRoute]Guid Id,[FromBody]Models.DTO.UpdateRequestWalk updateRequestWalk)
         {
             //validate Code
-            if (!ValidateUpdateWalkAsync(updateRequestWalk))
-            {
-                return NotFound(ModelState);
-            }
+            //if (!ValidateUpdateWalkAsync(updateRequestWalk))
+            //{
+            //    return NotFound(ModelState);
+            //}
             //Convert DTO to Domain Object
             var WalkValue = new Models.Domain.Walk
             {
@@ -155,14 +155,14 @@ namespace Supply_Chain_Portal.Controllers
                 ModelState.AddModelError(nameof(addRequestWalk), $"{nameof(addRequestWalk)} can't be empty ");
                 return false;
             }
-            if(string.IsNullOrWhiteSpace(addRequestWalk.Name))
-            {
-                ModelState.AddModelError(nameof(addRequestWalk.Name), $"{nameof(addRequestWalk.Name)} can't null or empty or white Space");
-            }
-            if (addRequestWalk.Length<=0)
-            {
-                ModelState.AddModelError(nameof(addRequestWalk.Length), $"{nameof(addRequestWalk.Name)} can't equal to Zero or less than Zero");
-            }
+            //if(string.IsNullOrWhiteSpace(addRequestWalk.Name))
+            //{
+            //    ModelState.AddModelError(nameof(addRequestWalk.Name), $"{nameof(addRequestWalk.Name)} can't null or empty or white Space");
+            //}
+            //if (addRequestWalk.Length<=0)
+            //{
+            //    ModelState.AddModelError(nameof(addRequestWalk.Length), $"{nameof(addRequestWalk.Name)} can't equal to Zero or less than Zero");
+            //}
 
             var result = resionRepository.GetRegionAsync(addRequestWalk.RegionId);
             if(result==null)
@@ -189,14 +189,14 @@ namespace Supply_Chain_Portal.Controllers
                 ModelState.AddModelError(nameof(updateRequestWalk), $"{nameof(updateRequestWalk)} can't be empty ");
                 return false;
             }
-            if (string.IsNullOrWhiteSpace(updateRequestWalk.Name))
-            {
-                ModelState.AddModelError(nameof(updateRequestWalk.Name), $"{nameof(updateRequestWalk.Name)} can't null or empty or white Space");
-            }
-            if (updateRequestWalk.Length <= 0)
-            {
-                ModelState.AddModelError(nameof(updateRequestWalk.Length), $"{nameof(updateRequestWalk.Name)} can't equal to Zero or less than Zero");
-            }
+            //if (string.IsNullOrWhiteSpace(updateRequestWalk.Name))
+            //{
+            //    ModelState.AddModelError(nameof(updateRequestWalk.Name), $"{nameof(updateRequestWalk.Name)} can't null or empty or white Space");
+            //}
+            //if (updateRequestWalk.Length <= 0)
+            //{
+            //    ModelState.AddModelError(nameof(updateRequestWalk.Length), $"{nameof(updateRequestWalk.Name)} can't equal to Zero or less than Zero");
+            //}
 
             var result = resionRepository.GetRegionAsync(updateRequestWalk.RegionId);
             if (result == null)

@@ -63,10 +63,10 @@ namespace Supply_Chain_Portal.Controllers
         public async Task<IActionResult> AddAllProductAsync(Models.DTO.ProductDetails productDetails)
         {
             //validate Code
-            if (!ValidateAddAllProductAsync(productDetails))
-            {
-                return BadRequest(ModelState);
-            }
+            //if (!ValidateAddAllProductAsync(productDetails))
+            //{
+            //    return BadRequest(ModelState);
+            //}
 
             var ProductData = new Models.Domain.ProductDetails()
             {
@@ -100,10 +100,10 @@ namespace Supply_Chain_Portal.Controllers
         public async Task<IActionResult> UpdateAllProductDeatailsAsync([FromRoute] int Id, [FromBody] Models.DTO.UpdateRequestProductDetails updateRequestProductDetails)
         {
             // validate Update Code
-            if(!ValidateUpdateAllProductDeatailsAsync(updateRequestProductDetails))
-            {
-                return BadRequest(ModelState);
-            }
+            //if(!ValidateUpdateAllProductDeatailsAsync(updateRequestProductDetails))
+            //{
+            //    return BadRequest(ModelState);
+            //}
             //Convert DTO to Domain models
 
             var product = new Models.Domain.ProductDetails()
