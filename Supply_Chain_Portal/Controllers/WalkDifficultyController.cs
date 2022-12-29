@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Supply_Chain_Portal.Models.DTO;
 using Supply_Chain_Portal.Repositories;
 
 namespace Supply_Chain_Portal.Controllers
@@ -36,7 +37,7 @@ namespace Supply_Chain_Portal.Controllers
             var ValuesDTO = mapper.Map<List<Models.DTO.WalkDifficulty>>(value);
             return Ok(ValuesDTO);
         }
-       
+
         [HttpGet]
         [Route("{Id:Guid}")]
         [ActionName("getAllWalkDifficultyAsync")]
@@ -50,11 +51,16 @@ namespace Supply_Chain_Portal.Controllers
             var Result = mapper.Map<Models.DTO.WalkDifficulty>(walkDifficulty);
             return Ok(Result);
         }
-       
-        
+
+
         [HttpPost]
         public async Task<IActionResult> AddWalkDificultyData(Models.DTO.AddRequestWalkDifficulty addRequestWalkDifficulty)
         {
+            //validate Code
+            if(!ValidateAddWalkDificultyData(addRequestWalkDifficulty))
+            {
+                return NotFound(ModelState);
+            }
             //Request Dto to Domain Models
             var WalkDificultyData = new Models.Domain.WalkDifficulty
             {
@@ -73,21 +79,26 @@ namespace Supply_Chain_Portal.Controllers
 
         }
 
-        
+
         [HttpPut]
         [Route("{Id:Guid}")]
-        public async Task<IActionResult> UpdateWalkDifficulty([FromRoute] Guid Id, [FromBody] Models.DTO.UpdateRequestWalkDifficulty updateRequestWalkDifficulty)
+        public async Task<IActionResult> UpdateWalkDifficultyAsync([FromRoute] Guid Id, [FromBody] Models.DTO.UpdateRequestWalkDifficulty updateRequestWalkDifficulty)
         {
+            //validate Code
+            if (!ValidateUpdateWalkDifficulty(updateRequestWalkDifficulty))
+            {
+                return NotFound(ModelState);
+            }
             //Convert DTO to Domain models
             var Walkdiffi = new Models.Domain.WalkDifficulty()
             {
                 Code = updateRequestWalkDifficulty.Code,
             };
             //Update WalkDifficulty details using repository
-            Walkdiffi = await walkDifficultyRepository.UpdatewalkDifficultyAsync(Id,Walkdiffi);
+            Walkdiffi = await walkDifficultyRepository.UpdatewalkDifficultyAsync(Id, Walkdiffi);
 
             //if Null then Not found
-            if(Walkdiffi == null)
+            if (Walkdiffi == null)
             {
                 return NotFound();
             }
@@ -96,10 +107,10 @@ namespace Supply_Chain_Portal.Controllers
             {
                 Id = Walkdiffi.Id,
                 Code = Walkdiffi.Code
-            }; 
+            };
             return Ok(WalkdiffiDTO);
         }
-        
+
         [HttpDelete]
         [Route("{Id:Guid}")]
         public async Task<IActionResult> DeleteWlakDifficultyById(Guid Id)
@@ -112,6 +123,45 @@ namespace Supply_Chain_Portal.Controllers
             var WalkDiffDTO = mapper.Map<Models.Domain.WalkDifficulty>(WalkDiff);
             return Ok(WalkDiffDTO);
         }
+        #region validate code Private method
+        private bool ValidateAddWalkDificultyData(Models.DTO.AddRequestWalkDifficulty addRequestWalkDifficulty)
+        {
+            if (addRequestWalkDifficulty == null)
+            {
+                ModelState.AddModelError(nameof(addRequestWalkDifficulty), $"{nameof(addRequestWalkDifficulty)} can't be empty ");
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(addRequestWalkDifficulty.Code))
+            {
+                ModelState.AddModelError(nameof(addRequestWalkDifficulty.Code), $"{nameof(addRequestWalkDifficulty.Code)} can't null or empty or white Space");
+            }
+            if (ModelState.ErrorCount > 0)
+            {
+                return false;
+            }
+            return true;
+
+        }
+        private bool ValidateUpdateWalkDifficulty(Models.DTO.UpdateRequestWalkDifficulty updateRequestWalkDifficulty)
+        {
+            if (updateRequestWalkDifficulty == null)
+            {
+                ModelState.AddModelError(nameof(updateRequestWalkDifficulty), $"{nameof(updateRequestWalkDifficulty)} can't be empty ");
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(updateRequestWalkDifficulty.Code))
+            {
+                ModelState.AddModelError(nameof(updateRequestWalkDifficulty.Code), $"{nameof(updateRequestWalkDifficulty.Code)} can't null or empty or white Space");
+            }
+            if (ModelState.ErrorCount > 0)
+            {
+                return false;
+            }
+            return true;
+
+        }
+        
+        #endregion
     }
 }
 

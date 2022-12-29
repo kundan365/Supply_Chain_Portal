@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Supply_Chain_Portal.Models.Domain;
+using Supply_Chain_Portal.Models.DTO;
 using Supply_Chain_Portal.Repositories;
 
 namespace Supply_Chain_Portal.Controllers
@@ -74,6 +75,12 @@ namespace Supply_Chain_Portal.Controllers
         [HttpPost]
         public async Task<IActionResult> AddRegionAsync(Models.DTO.AddReguestRegion addReguestRegion)
         {
+
+            //validate data
+            if(!validateAddRegionAsync(addReguestRegion))
+            {
+                return BadRequest(ModelState);
+            }
             //Request Dto to Domain Models
             var regionData = new Models.Domain.Region()
             {
@@ -107,6 +114,11 @@ namespace Supply_Chain_Portal.Controllers
         [Route("{Id:Guid}")]
         public async Task<IActionResult> UpdateRegionAsync([FromRoute] Guid Id,[FromBody]  Models.DTO.UpdateRequestRegion updateRequestRegion)
         {
+            //validate Code
+            if(!validateUpdateRegionAsync(updateRequestRegion))
+            {
+                return BadRequest(ModelState);
+            }
             //Convert DTO to Domain models
             var region = new Models.Domain.Region()
             {
@@ -152,9 +164,86 @@ namespace Supply_Chain_Portal.Controllers
             var regionDTO= mapper.Map<Models.DTO.Region>(region);
             return Ok(regionDTO);
         }
+       
+        #region Validate Region private Method
+       private bool validateAddRegionAsync(Models.DTO.AddReguestRegion addReguestRegion)
+        {
+            if(addReguestRegion==null)
+            {
+                ModelState.AddModelError(nameof(addReguestRegion), $"Add Region Data is required");
+                return false;
+            }
+            if(string.IsNullOrWhiteSpace(addReguestRegion.Code))
+            {
+                ModelState.AddModelError(nameof(addReguestRegion.Code), $"{nameof(addReguestRegion.Code)} can't null or empty or white Space");
+            }
+            if (string.IsNullOrWhiteSpace(addReguestRegion.Name))
+            {
+                ModelState.AddModelError(nameof(addReguestRegion.Name), $"{nameof(addReguestRegion.Code)} can't null or empty or white Space");
+            }
+            if (addReguestRegion.Area<=0)
+            {
+                ModelState.AddModelError(nameof(addReguestRegion.Area), $"{nameof(addReguestRegion.Area)} can't less than or Equal to Zero");
+            }
+            if (addReguestRegion.Lat <= 0)
+            {
+                ModelState.AddModelError(nameof(addReguestRegion.Lat), $"{nameof(addReguestRegion.Lat)} can't less than or Equal to Zero");
+            }
+            if (addReguestRegion.Long <= 0)
+            {
+                ModelState.AddModelError(nameof(addReguestRegion.Long), $"{nameof(addReguestRegion.Long)} can't less than or Equal to Zero");
+            }
+            if (addReguestRegion.Population < 0)
+            {
+                ModelState.AddModelError(nameof(addReguestRegion.Population), $"{nameof(addReguestRegion.Population)} can't less than Zero");
+            }
+            if(ModelState.Count > 0)
+            {
+                return false;
+            }
+            return true;
+        }
 
+       private bool validateUpdateRegionAsync(Models.DTO.UpdateRequestRegion updateRequestRegion)
+        {
+            if (updateRequestRegion == null)
+            {
+                ModelState.AddModelError(nameof(updateRequestRegion), $"Add Region Data is required");
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(updateRequestRegion.Code))
+            {
+                ModelState.AddModelError(nameof(updateRequestRegion.Code), $"{nameof(updateRequestRegion.Code)} can't null or empty or white Space");
+            }
+            if (string.IsNullOrWhiteSpace(updateRequestRegion.Name))
+            {
+                ModelState.AddModelError(nameof(updateRequestRegion.Name), $"{nameof(updateRequestRegion.Code)} can't null or empty or white Space");
+            }
+            if (updateRequestRegion.Area <= 0)
+            {
+                ModelState.AddModelError(nameof(updateRequestRegion.Area), $"{nameof(updateRequestRegion.Area)} can't less than or Equal to Zero");
+            }
+            if (updateRequestRegion.Lat <= 0)
+            {
+                ModelState.AddModelError(nameof(updateRequestRegion.Lat), $"{nameof(updateRequestRegion.Lat)} can't less than or Equal to Zero");
+            }
+            if (updateRequestRegion.Long <= 0)
+            {
+                ModelState.AddModelError(nameof(updateRequestRegion.Long), $"{nameof(updateRequestRegion.Long)} can't less than or Equal to Zero");
+            }
+            if (updateRequestRegion.Population < 0)
+            {
+                ModelState.AddModelError(nameof(updateRequestRegion.Population), $"{nameof(updateRequestRegion.Population)} can't less than Zero");
+            }
+            if (ModelState.Count > 0)
+            {
+                return false;
+            }
+            return true;
+        }
+        #endregion
     }
 
-   
+
 }
 
